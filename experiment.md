@@ -1,18 +1,18 @@
-# **Interessante ervaringen**
+# **Interesting Experiences**
 
-Mocht je meer interessante dingen tegen zijn gekomen, voeg het hier graag toe en maak een pull request. Wij horen het graag.
+If you come across more interesting findings, feel free to add them here and make a pull request. We’d love to hear them.
 
-### **Inzicht in chats**
-Admins van Open webUI kunnen de chats van andere gebruikers zien. Tenzij deze als temporary chats zijn begonnen door linksboven in op de naam van het model te klikken en daarna “temporary chat” aan te klikken.
+### **Insight into Chats**
+Admins of Open WebUI can see the chats of other users. Unless these were started as temporary chats by clicking on the model name in the top left and then selecting “temporary chat.”
 
-### **Ongecensureerde modellen**
-Misschien ben je bekend met de beperkingen van commercieel aangeboden chat diensten. Een model als `llama2-uncensored` heeft er echter geen problemen mee instructies te geven voor illegale handelingen. Ook onderwerpen die politiek gevoelig liggen leveren soms andere antwoorden op dan je zou verwachten.
+### **Uncensored Models**
+You may be familiar with the restrictions of commercially offered chat services. A model like `llama2-uncensored`, however, has no problem giving instructions for illegal activities. Topics that are politically sensitive may also produce answers different from what you’d expect.
 
-### **Culturele context**
-Bijna alle modellen kunnen ook in het Nederlands communiceren, maar niet allemaal even goed. Ook zijn niet alle modellen even bekend met alle culturen, vraag bijvoorbeeld eens om een bekend Nederlands spreekwoord of naar Bassie en Adriaan.
+### **Cultural Context**
+Almost all models can communicate in Dutch as well, though not all equally well. Also, not all models are equally familiar with all cultures—try, for example, asking for a well-known Dutch proverb or about *Bassie en Adriaan*.
 
-### **(Onverwachte) beperkingen**
-Vraag een model eens hoe vaak de letter 'r' in het woord strawberry voor komt. Soms hebben ze het goed, maar als je dan zegt dat ze het fout hebben komt er alsnog een fout antwoord. Het kan interessant zijn wat ervaringen op te doen met deze soms onverwachte beperkingen.
+### **(Unexpected) Limitations**
+Ask a model how many times the letter 'r' appears in the word *strawberry*. Sometimes they get it right, but if you then say they were wrong, they may still give an incorrect answer. It can be interesting to gain experience with these sometimes unexpected limitations.
 
-### **Laat een model zich anders gedragen**
-Met behulp van een [system prompt](https://docs.openwebui.com/features/chat-features/chat-params/#system-prompt-and-advanced-parameters-hierarchy-chart) kan je een model de opdracht geven bijvoorbeeld alle vragen te beantwoorden alsof deze Julius Ceasar is (of een Galliër uit een klein dorpje). Of misschien om alle vragen in het Frans te beantwoorden. Of misschien om te assisteren met wiskunde opdrachten maar nooit direct het antwoord te geven. Dit is een laagdrempelige manier om allerlei toepassingen te realiseren. Een echt goede system prompt te maken, die precies doet wat je wil, kan wat experimenteerwerk zijn.
+### **Make a Model Behave Differently**
+With the help of a [system prompt](https://docs.openwebui.com/features/chat-features/chat-params/#system-prompt-and-advanced-parameters-hierarchy-chart), you can instruct a model to answer all questions as if it were Julius Caesar (or a Gaul from a small village). Or maybe to answer everything in French. Or perhaps to assist with math problems but never give the direct answer. This is a low-threshold way to realize all kinds of applications. Creating a really good system prompt that does exactly what you want may require some experimentation.
