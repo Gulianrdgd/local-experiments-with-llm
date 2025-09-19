@@ -1,198 +1,203 @@
-# **Beheren van de omgeving**
+# **Managing the Environment**
 
-## **Eerste keer toegang**
+## **First-Time Access**
 
-### **Gebruikersbeheer**
+### **User Management**
 
-De eerste gebruiker die zich registreert krijgt automatisch beheerrechten. Daarna kunnen de instellingen worden aangepast in het admin panel.
+The first user to register automatically receives admin rights. After that, the settings can be adjusted in the admin panel.
 
 ![image](uploads/0c4c67c3f69c49bda439aadc4d53d7c2/image.png)
 
-Nieuwe gebruikers kunnen via de admin interface worden toegevoegd. (Mocht je al bestaande gebruikers hebben dan is er, afhankelijk van de situatie, een geavanceerde optie deze te koppelen https://docs.openwebui.com/features/sso/)
+New users can be added via the admin interface. (If you already have existing users, depending on the situation, there is an advanced option to link them https://docs.openwebui.com/features/sso/)
 
-### **Connectie maken met ollama**
+### **Connecting to Ollama**
 
-Wanneer alles is opgestart en je kan inloggen bij openweb ui, dan moeten we alleen nog instellen waar precies ollama draait. 
+Once everything has started and you can log in to Open WebUI, we still need to configure where Ollama is running.
 
-- Klik op je gebruiker, linksonderin
-- Klik op Beheerderspaneel
-- Klik op instellingen
-- Klik op verbindingen
-- Pas dan de ollama API verbinding aan naar: 
+- Click your user (bottom left)  
+- Click Admin Panel  
+- Click Settings  
+- Click Connections  
+- Then adjust the Ollama API connection to:  
 ```
 http://host.docker.internal:11434
 ```
 
 ![Screenshot_2025-03-14_at_11.33.36](uploads/f256f52bab3f9c3800d3c1f7ac19e743/Screenshot_2025-03-14_at_11.33.36.png)
 
-## **Modellen beheren**
+## **Managing Models**
 
-### **Modellen downloaden**
+### **Downloading Models**
 
-Na inloggen op de Open WebUI interface kun je modellen downloaden en beheren via het "Models" tabblad.
+After logging into the Open WebUI interface, you can download and manage models via the "Models" tab.
 
 ![Screenshot_2025-03-14_at_11.42.02](uploads/f9a7e5d57ba10ca6e96961a864c48853/Screenshot_2025-03-14_at_11.42.02.png)
 
-Een aantal interessante modellen om mee te beginnen zijn:
+Some interesting models to start with are:
 
-- **bramvanroy/geitje-7b-ultra:Q4_K_M**: Een Nederlands model
-- **deepseek-r1:8b**: Een krachtig Chinees reasoning-model, interessant is om te zien dat een lokaal model echt andere dingen zegt over bijvoorbeeld Taiwan dan de versie die als dienst wordt aangeboden
-- **gemma:7b**: Een compact model van Google
-- **phi4:latest**: Microsofts model
-- **qwen:7b**: Een veelzijdig model van Alibaba
-- **mistral:7b** Een model uit Frankrijk
-- **llama2-uncensored:latest** Een ongecensureerde versie van LLAMA, deze is interessant omdat je hiermee kan zien welke verschillen er zijn tussen een lokale variant en een commerciële variant waar de ruwe randjes van zijn afgeschuurd
+- **bramvanroy/geitje-7b-ultra:Q4_K_M**: A Dutch model  
+- **deepseek-r1:8b**: A powerful Chinese reasoning model; interesting to see that a local model gives very different answers (e.g., about Taiwan) than the hosted service version  
+- **gemma:7b**: A compact model from Google  
+- **phi4:latest**: Microsoft’s model  
+- **qwen:7b**: A versatile model from Alibaba  
+- **mistral:7b**: A model from France  
+- **llama2-uncensored:latest**: An uncensored version of LLAMA, interesting to compare differences with commercial variants that are more filtered  
 
-**Modellen downloaden via terminal** Als alternatief kun je modellen ook downloaden via de commandline:
+**Downloading models via terminal**  
+As an alternative, you can also download models from the command line:
 
-1. Verbinding maken met de Ollama container
+1. Connect to the Ollama container  
 ```bash
 docker exec -it ollama bash
 ```
 
-2. Model downloaden (voorbeeld: Deepseek-r1:14b)
+2. Download a model (example: Deepseek-r1:14b)  
 ```bash
 ollama pull deepseek-r1:14b
 ```
 
-3. Lijst van geïnstalleerde modellen bekijken
+3. View the list of installed models  
 ```bash
 ollama list
 ```
 
-### **Modelbeperkingen en prestaties**
+### **Model Limitations and Performance**
 
-Met de RTX 4070 Super (12GB VRAM) kun je werken met modellen tot ongeveer 14 miljard parameters. Grotere modellen zoals Llama 3 70B of Deepseek-r1:32b passen niet in het geheugen van deze GPU.
+With the RTX 4070 Super (12GB VRAM), you can work with models up to around 14 billion parameters. Larger models such as Llama 3 70B or Deepseek-r1:32b won’t fit in the memory of this GPU.
 
-Je kunt het volgende commando gebruiken om het huidige GPU-geheugengebruik te controleren:
+You can use the following command to check current GPU memory usage:  
 
 ```bash
 nvidia-smi
 ```
 
-### **Modelinstellingen aanpassen**
+### **Adjusting Model Settings**
 
-Open WebUI biedt verschillende instellingen om het gedrag van modellen aan te passen, een paar interessante zijn:
+Open WebUI provides various settings to adjust model behavior, some interesting ones include:
 
-- **Temperature** (0.0-2.0): Bepaalt creativiteit/willekeurigheid. Lagere waarden (0.0-0.3) geven meer deterministische, consistente antwoorden, hogere waarden (0.7-1.0) geven meer creatieve, gevarieerde antwoorden.
-- **Top P** (0.0-1.0): Controleert diversiteit. Lagere waarden beperken de woordkeuze tot meer waarschijnlijke opties.
-- **Context Length**: Maximum aantal tokens dat het model kan verwerken, inclusief invoer en gegenereerde tekst.
+- **Temperature** (0.0–2.0): Controls creativity/randomness. Lower values (0.0–0.3) give more deterministic, consistent answers; higher values (0.7–1.0) give more creative, varied answers.  
+- **Top P** (0.0–1.0): Controls diversity. Lower values limit word choices to the most likely options.  
+- **Context Length**: Maximum number of tokens the model can process, including input and generated text.  
 
-Pas deze instellingen aan om te experimenteren.
+Adjust these settings to experiment.  
 
-### **Interessante opties**
+### **Interesting Options**
 
-Open WebUI biedt een aantal andere interessante opties:
+Open WebUI also offers some other interesting options:
 
-- **API endpoints** https://docs.openwebui.com/getting-started/api-endpoints/ als je niet de interface wil gebruiken maar een model programmatisch wil benaderen is er een optie voor een HTTP API.
-- **System prompts** https://docs.openwebui.com/features/chat-features/chat-params/#system-prompt-and-advanced-parameters-hierarchy-chart hiermee kan je specifieke instructie aan een model geven hoe deze zich tijdens een chat moet gedragen.
-- **Filter functions** https://docs.openwebui.com/features/plugin/functions/filter/ hiermee kan je programmatisch inkomende chatberichten en LLM antwoorden aanpassen.
-- **Standaard prompts instellen** De admin kan prompt suggesties toevoegen. Open webUI heeft een aantal standaard prompts, zoals "Explain options trading", maar deze zijn in het Engels en niet altijd relevant voor elke organisatie. Zie het screenshot.
-![Standaard prompt instellen](uploads/standardprompt.png)
+- **API endpoints** https://docs.openwebui.com/getting-started/api-endpoints/ – If you don’t want to use the interface but instead access a model programmatically, there’s an HTTP API option.  
+- **System prompts** https://docs.openwebui.com/features/chat-features/chat-params/#system-prompt-and-advanced-parameters-hierarchy-chart – Lets you give specific instructions on how a model should behave during a chat.  
+- **Filter functions** https://docs.openwebui.com/features/plugin/functions/filter/ – Lets you programmatically adjust incoming chat messages and LLM responses.  
+- **Setting default prompts** – The admin can add prompt suggestions. Open WebUI comes with defaults like "Explain options trading," but these are in English and not always relevant to every organization. See screenshot.  
 
-## Beheer
+![Set default prompt](uploads/standardprompt.png)
 
-### **Lokale netwerktoegang**
+## **Management**
 
-Om de interface beschikbaar te maken op je lokale netwerk, wijzig je de poortbinding in docker-compose.yml:
+### **Local Network Access**
+
+To make the interface available on your local network, change the port binding in `docker-compose.yml`:  
 ```yaml
 ports:
-  - "0.0.0.0:3000:8080" # 0.0.0.0 betekend beschikbaar op alle netwerkinterfaces
+  - "0.0.0.0:3000:8080" # 0.0.0.0 means available on all network interfaces
 ```
 
-De interface is dan bereikbaar via http://[server-ip]:3000 op je lokale netwerk.
+The interface will then be accessible via http://[server-ip]:3000 on your local network.  
 
-### **Externe toegang**
+### **External Access**
 
-Externe toegang is zeer afhankelijk van de netwerk opzet waarin de PC draait en dit zal afhangen van de organisatie. Er zijn hier veel mogelijkheden voor. Een aantal dingen om rekening mee te houden zijn DNS, als je wil dat externe toegang via een URL mogelijk is. TLS voorzieningen zodat de toegang via een veilige verbinding kan verlopen, vaak wordt hiervoor een reverse proxy zoals apache, nginx of caddy gebruikt (al dan niet in combinatie met letsencrypt). Houdt er rekening mee dat als het extern toegankelijk is het dan ook voor iedereen toegankelijk is (zelfs al kan niet iedereen inloggen). Zelf gebruiken we op het moment [cloudflare tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/).
+External access depends heavily on the network setup where the PC runs and will vary by organization. There are many options here. Things to consider include DNS (if you want external access via a URL), TLS for secure connections (often handled by a reverse proxy such as Apache, Nginx, or Caddy, possibly combined with Let’s Encrypt). Keep in mind: if it’s externally accessible, it is accessible to everyone (even if not everyone can log in). We currently use [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/).  
 
-### **Automatische updates met Watchtower**
+### **Automatic Updates with Watchtower**
 
-Om ervoor te zorgen dat je containers automatisch worden bijgewerkt gebruiken we watchtower, deze wordt meegedeployed in de [docker-compose.yml](docker-compose.yml).
+To ensure your containers are updated automatically, we use Watchtower, which is deployed along with [docker-compose.yml](docker-compose.yml).  
 
-## **Probleemoplossing**
+## **Troubleshooting**
 
-### **Veelvoorkomende problemen en oplossingen**
+### **Common Problems and Solutions**
 
-#### **GPU niet herkend in container**
+#### **GPU Not Recognized in Container**
 
-**Symptoom**: nvidia-smi werkt buiten Docker, maar niet binnen de container.
+**Symptom**: `nvidia-smi` works outside Docker but not inside the container.  
 
-**Oplossing**:
+**Solution**:  
 
-1. Controleer of nvidia-container-toolkit correct is geïnstalleerd
+1. Check if the NVIDIA Container Toolkit is correctly installed  
 ```bash
 sudo apt install nvidia-container-toolkit -y
 ```
 
-2. Herstart Docker en de containers
+2. Restart Docker and the containers  
 ```bash
 sudo systemctl restart docker
 docker-compose down
 docker-compose up -d
 ```
 
-#### **Ollama verliest GPU-verbinding**
+#### **Ollama Loses GPU Connection**
 
-**Symptoom**: Modellen werken plotseling veel trager.
+**Symptom**: Models suddenly run much slower.  
 
-**Oplossing**:
+**Solution**:  
 
-1. Herstart alleen de Ollama container
+1. Restart only the Ollama container  
 ```bash
 docker-compose restart ollama
 ```
 
-2. Controleer logs voor mogelijke oorzaken
+2. Check logs for possible causes  
 ```bash
 docker-compose logs -f ollama
 ```
 
-#### **Open WebUI niet bereikbaar**
+#### **Open WebUI Not Reachable**
 
-**Symptoom**: Je kunt de webinterface niet bereiken op localhost:3000.
+**Symptom**: You cannot reach the web interface at localhost:3000.  
 
-**Oplossing**:
+**Solution**:  
 
--Controleer of containers draaien
+- Check if containers are running  
 ```bash
 docker-compose ps
 ```
--Controleer logs voor fouten
+
+- Check logs for errors  
 ```bash
 docker-compose logs ollama-webui
 ```
--Controleer of poort 3000 niet door een andere service wordt gebruikt
+
+- Check if port 3000 is already in use by another service  
 ```bash
 sudo lsof -i :3000
 ```
 
-#### **Modellen laden zeer traag**
+#### **Models Load Very Slowly**
 
-**Symptoom**: Het duurt minuten voordat een model wordt geladen.
+**Symptom**: It takes minutes for a model to load.  
 
-**Oplossing**:
+**Solution**:  
 
-1. Pas de OLLAMA_KEEP_ALIVE waarde aan in `docker-compose.yml`: `environment: - OLLAMA_KEEP_ALIVE=5m # Houdt model 5 minuten in geheugen`
-2. Gebruik kleinere modellen als je GPU-geheugen beperkt is.
-3. Controleer of andere processen GPU-geheugen gebruiken met nvidia-smi.
+1. Adjust the `OLLAMA_KEEP_ALIVE` value in `docker-compose.yml`:  
+   `environment: - OLLAMA_KEEP_ALIVE=5m # Keep model in memory for 5 minutes`  
+2. Use smaller models if your GPU memory is limited.  
+3. Check if other processes are using GPU memory with `nvidia-smi`.  
 
-### **Logs interpreteren**
+### **Interpreting Logs**
 
-Open WebUI en Ollama genereren logs die nuttig zijn voor probleemoplossing:
+Open WebUI and Ollama generate logs that are useful for troubleshooting:
 
-Bekijk de laatste 100 logregels van Ollama
+View the last 100 log lines of Ollama  
 ```bash
 docker-compose logs --tail=100 ollama
 ```
 
-Volg de logs live (Ctrl+C om te stoppen)
+Follow logs live (Ctrl+C to stop)  
 ```bash
 docker-compose logs -f ollama-webui
 ```
 
-Veelvoorkomende foutmeldingen:
+Common error messages:
 
-- CUDA error: out of memory: Je GPU heeft onvoldoende geheugen voor het gekozen model.
-- connection refused: Er is een probleem met de verbinding tussen Open WebUI en Ollama.
-- failed to pull model: Probleem met het downloaden van een model, meestal een netwerkprobleem.
+- **CUDA error: out of memory** – Your GPU does not have enough memory for the selected model.  
+- **connection refused** – There is a problem with the connection between Open WebUI and Ollama.  
+- **failed to pull model** – Problem downloading a model, usually a network issue.  
