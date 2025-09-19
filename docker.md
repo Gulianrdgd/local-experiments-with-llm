@@ -1,153 +1,154 @@
-# **Docker en docker compose**
+# **Docker and Docker Compose**
 
-## **Docker en containers: basisconcepten**
+## **Docker and Containers: Basic Concepts**
 
-### **Wat is Docker?**
+### **What is Docker?**
 
-Docker is een platform dat de ontwikkeling, implementatie en uitvoering van applicaties in zogenaamde "containers" vereenvoudigt. Containers zijn lichtgewicht, draagbare, zelfstandige omgevingen waarin software kan draaien. Zo hoef je niet eerst alles te downloaden en in te stellen, dit is van tevoren gedaan. https://www.docker.com/
+Docker is a platform that simplifies the development, deployment, and execution of applications in so-called "containers." Containers are lightweight, portable, self-contained environments in which software can run. This way, you don’t have to download and configure everything yourself—it’s done in advance. https://www.docker.com/
 
-### **Belangrijke Docker-concepten**
+### **Key Docker Concepts**
 
-- **Image**: Een sjabloon dat wordt gebruikt om containers te maken. Docker images bevatten de code, bibliotheken, en configuratie voor een applicatie.
-- **Container**: Een instantie van een image. Wanneer je èèn image maakt kan je bijvoorbeeld 10 verschillende geisoleerde containers hiervan naast elkaar draaien.
-- **Docker Compose**: Een tool om applicaties die meerdere containers nodig hebben te beheren. Zo heb je maar 1 bestand nodig om alle benodigde containers te beheren en aan elkaar te kopellen.
-- **Volume**: Een plek om data te bewaren van de containers, zelfs als je de container opnieuw opstart
+- **Image**: A template used to create containers. Docker images contain the code, libraries, and configuration for an application.  
+- **Container**: An instance of an image. For example, from a single image, you can run 10 different isolated containers side by side.  
+- **Docker Compose**: A tool to manage applications that require multiple containers. With a single file, you can manage and connect all the required containers.  
+- **Volume**: A place to store container data, even if the container is restarted.  
 
-**Waarom gebruiken we Docker voor onze LLM-omgeving?**
+**Why do we use Docker for our LLM environment?**
 
-1. **Isolatie**: Ollama en Open WebUI draaien in geïsoleerde omgevingen zonder conflicten met andere software.
-2. **Eenvoudige installatie**: Geen complexe configuratie.
-3. **Consistentie**: De setup werkt hetzelfde op verschillende machines.
-4. **Eenvoudige updates**: Updates kunnen worden toegepast door simpelweg nieuwe container-images te downloaden.
+1. **Isolation**: Ollama and Open WebUI run in isolated environments without conflicts with other software.  
+2. **Easy installation**: No complex configuration.  
+3. **Consistency**: The setup works the same across different machines.  
+4. **Simple updates**: Updates can be applied simply by downloading new container images.  
 
-### **Docker installeren**
+### **Installing Docker**
 
-1. Installeer benodigde pakketten
+1. Install required packages  
 ```bash
 sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
 ```
 
-2. Voeg Docker's officiële GPG-sleutel toe
+2. Add Docker’s official GPG key  
 ```bash
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 ```
 
-3. Voeg Docker repository toe
+3. Add the Docker repository  
 ```bash
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 ```
 
-4. Update pakketbronnen en installeer Docker
+4. Update package sources and install Docker  
 ```bash 
 sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 ```
-5. Voeg je gebruiker toe aan de docker-groep (geen sudo nodig voor docker-commando's)
+
+5. Add your user to the Docker group (no need for sudo with Docker commands)  
 ```bash
 sudo usermod -aG docker $USER
 ```
 
-6. Start en enable Docker service
+6. Start and enable Docker service  
 ```
 sudo systemctl start docker
 sudo systemctl enable docker
 ```
 
-Log uit en weer in (of herstart) om de groepswijzigingen toe te passen.
+Log out and back in (or reboot) to apply the group changes.  
 
-### **NVIDIA Container Toolkit configureren**
+### **Configuring NVIDIA Container Toolkit**
 
-Om Docker-containers toegang te geven tot de GPU, moet de NVIDIA Container Toolkit worden geïnstalleerd:
+To give Docker containers access to the GPU, the NVIDIA Container Toolkit must be installed:
 
-1. Installeer de NVIDIA Container Toolkit
+1. Install the NVIDIA Container Toolkit  
 ```bash
 sudo apt-get install nvidia-container-toolkit -y
 ```
 
-2. Configureer Docker voor gebruik met NVIDIA
+2. Configure Docker to use NVIDIA  
 ```bash
 sudo nvidia-ctk runtime configure --runtime=docker
 ```
 
-3. Herstart Docker om de wijzigingen toe te passen
+3. Restart Docker to apply the changes  
 ```bash
 sudo systemctl restart docker
 ```
 
-Test of de GPU beschikbaar is in Docker:
+Test if the GPU is available in Docker:  
 
 ```bash
 docker run --rm --gpus all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi
 ```
 
-Als dit commando de GPU-informatie toont (vergelijkbaar met de eerdere nvidia-smi uitvoer), is de configuratie succesvol.
+If this command displays GPU information (similar to the earlier `nvidia-smi` output), the configuration is successful.  
 
-## **LLM-omgeving opzetten met Docker Compose**
+## **Setting Up the LLM Environment with Docker Compose**
 
-### **Docker Compose configuratie**
+### **Docker Compose Configuration**
 
-1. Maak een nieuwe map voor je LLM-project:
+1. Create a new folder for your LLM project:  
 ```bash
 mkdir ~/llm-setup
 cd ~/llm-setup
 ```
 
-Maak een docker-compose.yml bestand met [deze inhoud](docker-compose.yml)
+Create a `docker-compose.yml` file with [this content](docker-compose.yml).  
 
-**Toelichting bij deze configuratie:**
+**Explanation of this configuration:**
 
-- Er worden twee containers opgezet:
-  - **Ollama**: De backend die de LLM-modellen beheert en uitvoert
-  - **Open WebUI**: De gebruiksvriendelijke webinterface voor interactie
-- Volumes zorgen ervoor dat gegevens bewaard blijven, zelfs als de containers worden gestopt of verwijderd
-- De GPU-toegang wordt geconfigureerd via het deploy gedeelte
-- Open WebUI communiceert met Ollama via de interne Docker-netwerkverbinding
+- Two containers are set up:  
+  - **Ollama**: The backend that manages and runs the LLM models  
+  - **Open WebUI**: The user-friendly web interface for interaction  
+- Volumes ensure that data is preserved even if the containers are stopped or removed  
+- GPU access is configured through the `deploy` section  
+- Open WebUI communicates with Ollama via the internal Docker network connection  
 
-### **Opstarten van de omgeving**
+### **Starting the Environment**
 
-Start de containers met het volgende commando:
+Start the containers with the following command:  
 
 ```bash
 docker-compose up -d
 ```
 
-Dit commando start de containers in de achtergrond (`-d` voor "detached mode").
+This command starts the containers in the background (`-d` stands for "detached mode").  
 
-Na het opstarten is de webinterface beschikbaar op [http://localhost:3000](http://localhost:3000).
+After startup, the web interface is available at [http://localhost:3000](http://localhost:3000).  
 
-### **Containers beheren**
+### **Managing Containers**
 
-Nuttige commando's voor het beheren van je Docker-containers:
+Useful commands for managing your Docker containers:
 
-- Containers starten
+- Start containers  
 ```bash
 docker-compose up -d
 ```
 
-- Status van containers controleren
+- Check container status  
 ```bash
 docker-compose ps
 ```
 
-- Logs bekijken van de containers\
+- View logs of the containers  
 ```bash
-docker-compose logs -f ollama # Logs van Ollama
+docker-compose logs -f ollama # Logs of Ollama
 ```
 ```bash
-docker-compose logs -f ollama-webui # Logs van Open WebUI
+docker-compose logs -f ollama-webui # Logs of Open WebUI
 ```
 
-- Containers stoppen
+- Stop containers  
 ```bash
 docker-compose stop
 ```
 
-- Containers stoppen en verwijderen (data blijft behouden in volumes)
+- Stop and remove containers (data is preserved in volumes)  
 ```bash
 docker-compose down
 ```
 
-- Containers stoppen en verwijderen inclusief volumes (WAARSCHUWING: alle data wordt verwijderd)
+- Stop and remove containers including volumes (**WARNING: all data will be deleted**)  
 ```bash
 docker-compose down -v
 ```
